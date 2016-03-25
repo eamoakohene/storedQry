@@ -1,9 +1,9 @@
 Package: storedQry
 Type: Package
-Title: Store queries in SQLite
+Title: Helper Class For Stored Queries In SQLite
 Version: 0.2.0
 Author: Emmanuel Amoakohene
 Maintainer: <eamoakohene@gmail.com>
 Depends: R6
-Description: R6 Class for managing stored queries in Sqlite db.
+Description: A helper Class for managing stored queries in Sqlite db.
 LazyData: TRUE

@@ -10,7 +10,7 @@ SQ <- R6::R6Class(
     qry_params = NULL, # stored query parameters
 
 
-    initialize = function(db,name , params) {
+    initialize = function(db, name , params) {
 
       super$initialize(db)
 
@@ -503,7 +503,27 @@ SQ <- R6::R6Class(
       }
     }
 
+    ,table_procreate = function() {
+      ddl <- "
+      CREATE TABLE stored_queries (
+      id    INTEGER      PRIMARY KEY AUTOINCREMENT NOT NULL,
+      qry_name           VARCHAR (50),
+      qry_params         TEXT,
+      qry_sql            TEXT,
+      qry_default_values TEXT
+      );
+      "
 
+      do_i_exist <- "SELECT count(name) as tcount FROM sqlite_master WHERE type='table' AND name='stored_queries';"
+
+      tcount <- private$run_sql(do_i_exist)
+
+      if (nrow(tcount) == 0) {
+        be_borned <- private$run_sql(ddl)
+      }
+
+      invisible(self)
+    }
 
 
   ),#public
@@ -523,27 +543,6 @@ SQ <- R6::R6Class(
     }#function
 
 
-    ,qry_create_self_table = function() {
-      qry_ddl <- "
-      CREATE TABLE stored_queries (
-      id    INTEGER      PRIMARY KEY AUTOINCREMENT NOT NULL,
-      qry_name           VARCHAR (50),
-      qry_params         TEXT,
-      qry_sql            TEXT,
-      qry_default_values TEXT
-      );
-      "
-
-      checks_sql <- "SELECT count(name) as tcount FROM sqlite_master WHERE type='table' AND name='stored_queries';"
-
-      tcount <- private$run_sql(checks_sql)
-
-      if (nrow(tcount) == 0) {
-        ttable <- private$run_sql(qry_ddl)
-      }
-
-      invisible(self)
-    }
 
 
 )
