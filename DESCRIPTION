@@ -1,0 +1,10 @@
+Package: storedQry
+Type: Package
+Title: Store queries in SQLite
+Version: 0.1.0
+Author: Emmanuel Amoakohene
+Maintainer: <eamoakohene@gmail.com>
+Depends: R6
+Description: Stored Queries in SQLite
+License: GPL-2
+LazyData: TRUE
