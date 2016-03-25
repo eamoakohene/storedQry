@@ -64,6 +64,7 @@ SQ <- R6::R6Class(
           stop(paste0("Query ",value," does not exists"))
         }
       }
+      invisible()
     },
 
     get_name = function() {
@@ -77,6 +78,7 @@ SQ <- R6::R6Class(
       if (!missing(value) && !is.null(value) ) {
         self$params <- value
       }
+      invisible()
     },
 
     get_params = function() {
