@@ -66,24 +66,27 @@ SQ <- R6::R6Class(
       }
     },
 
-    #get query name
-    qry_get_name = function() {
+    get_name = function() {
 
       return(self$name)
     },
 
+
     #set params
-    qry_set_params = function(value) {
-      if (!missing(value)) {
+    set_params = function(value) {
+      if (!missing(value) && !is.null(value) ) {
         self$params <- value
       }
     },
 
-
-    qry_get_params = function() {
+    get_params = function() {
       return(strsplit(self$qry_params,
                       private$params_delimeter)[[1]])
     },
+
+    #get query name
+
+
 
     #get stored
     qry_get_sql = function() {
@@ -125,7 +128,7 @@ SQ <- R6::R6Class(
         stop("No sql found")
       }
 
-      p <- self$qry_get_params()
+      p <- self$get_params()
       if (!is.na(p) || is.null(p)) {
         for (i in 1:length(p)) {
 
