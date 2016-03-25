@@ -330,18 +330,40 @@ SQ <- R6::R6Class(
       return(nrow(tbls))
     },
 
-    table_get_records = function(tname,n,top = TRUE,where=NULL) {
+    table_get_records = function(tname,n,top = TRUE,where=NULL, order_by=NULL) {
       if (!missing(tname)) {
         temp <- NULL
-        if(is.null(where)){
-          temp <- private$run_sql(paste0("select * from ",tname))
+        if(is.null(order_by)){
+            if(is.null(where)){
+              temp <- private$run_sql(paste0("select * from ",tname))
+            }else{
+              temp <- private$run_sql(
+                paste0(
+                  "select * from ",tname,
+                  " where ",where
+                )
+              )
+            }
         }else{
-          temp <- private$run_sql(
-            paste0(
-              "select * from ",tname,
-              " where ",where
+          if(is.null(where)){
+            temp <- private$run_sql(
+                    paste0(
+                      "select * from ",tname,
+                      " order by ", order_by
+                    )
+              )
+
+          }else{
+
+            temp <- private$run_sql(
+              paste0(
+                "select * from ",tname,
+                " where ",where,
+                " order by ",order_by
+              )
             )
-          )
+          }
+
         }
         if (!missing(n)) {
           if (top) {
@@ -356,8 +378,8 @@ SQ <- R6::R6Class(
       }
     },
 
-    table_head = function(tname, n = 10,where=NULL) {
-      temp <- self$table_all(tname,where = where)
+    table_head = function(tname, n = 10,where=NULL, order_by = NULL) {
+      temp <- self$table_all(tname,where = where, order_by = order_by )
       if (nrow(temp) > 0) {
         return(head(temp,n = n))
       }else{
@@ -365,8 +387,8 @@ SQ <- R6::R6Class(
       }
     },
 
-    table_tail = function (tname,n = 10,where=NULL) {
-      temp <- self$table_all(tname,where = where)
+    table_tail = function (tname,n = 10,where=NULL, order_by = NULL) {
+      temp <- self$table_all(tname,where = where , order_by = order_by )
       if (nrow(temp) > 0) {
         return(tail(temp,n = n))
       }else{
@@ -382,9 +404,9 @@ SQ <- R6::R6Class(
       return(temp)
     },
 
-    table_all = function(tname,where=NULL) {
+    table_all = function(tname,where=NULL, order_by = NULL) {
       if (!missing(tname)) {
-        return(self$table_get_records(tname = tname,where=where))
+        return(self$table_get_records(tname = tname,where=where , order_by = order_by ))
       }else{
         stop("Please supply table name")
       }

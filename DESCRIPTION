@@ -1,10 +1,9 @@
 Package: storedQry
 Type: Package
 Title: Store queries in SQLite
-Version: 0.1.0
+Version: 0.2.0
 Author: Emmanuel Amoakohene
 Maintainer: <eamoakohene@gmail.com>
 Depends: R6
-Description: Stored Queries in SQLite
-License: GPL-2
+Description: R6 Class for managing stored queries in Sqlite db.
 LazyData: TRUE

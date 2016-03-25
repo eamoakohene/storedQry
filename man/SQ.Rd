@@ -18,10 +18,10 @@
     SQ$new( db, name , params)$table_list()
     SQ$new( db, name , params)$table_count()
 
-    SQ$new( db, name , params)$table_get_records(tname, top=TRUE, where=NULL)
-    SQ$new( db, name , params)$table_head(tname, n = 10, where = NULL)
-    SQ$new( db, name , params)$table_tail(tname, n = 10, where = NULL)
-    SQ$new( db, name , params)$table_all(tname, where= NULL)
+    SQ$new( db, name , params)$table_get_records(tname, top=TRUE, where=NULL, order_by = order_by )
+    SQ$new( db, name , params)$table_head(tname, n = 10, where = NULL, order_by = order_by )
+    SQ$new( db, name , params)$table_tail(tname, n = 10, where = NULL, order_by = order_by )
+    SQ$new( db, name , params)$table_all(tname, where= NULL, order_by = order_by )
     SQ$new( db, name , params)$table_info(tname)
     SQ$new( db, name , params)$table_add(tname, df)
     SQ$new( db, name , params)$table_create(tname, df)
@@ -42,9 +42,9 @@
   \item{values}{ a vector containing values to be added to the table}
 }
 \description{
-SQ class is a helper class and not intended to run on its own. SQ expect a table by name \code{stored_queries} to exist in sqlite database \code{db}.
+SQ class is a helper class and not intended to run on its own. SQ expects a table by name \code{stored_queries} to exist in sqlite database \code{db}.
 
-SQ provide a convienient way to separate sql statements from your R code.
+SQ provides a convienient way to separate sql statements from R code.
 
 }
 \examples{

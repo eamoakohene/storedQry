@@ -1,7 +1,7 @@
-#my_db <- 'R:/packages/beamaSankey/inst/extdata/sankeys.sqlite'
+#my_db <- 'R:/packages/beamafx/inst/extdata/beamafx.sqlite'
 #abc <- storedQry::SQ$new(db=my_db)
 #abc$tables_list()
-#abc$table_tail('sk_data')
+#abc$table_tail('fx_data',order_by = 'yr,mth,dy desc')
 #abc$set_name('sk_view_group')
 
 # abc$set_params(
