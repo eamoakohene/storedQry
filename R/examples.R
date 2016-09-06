@@ -1,3 +1,4 @@
+#my_db <- 'R:/shiny/beama/bmonitor/bss.sqlite'
 #my_db <- 'R:/packages/beamafx/inst/extdata/beamafx.sqlite'
 #abc <- storedQry::SQ$new(db=my_db)
 #abc$tables_list()
@@ -13,3 +14,26 @@
 # )
 
 #abc$qry_exec()
+#storedQry::SQ$new( 'R:/packages/beamafx/inst/extdata/beamafx.sqlite' )$set_name("fx_update_periods")$qry_exec()
+
+# abc <- SQ$new(
+#   'R:/shiny/beama/bmonitor/bss.sqlite'
+#   )$set_name(
+#     'trends_growth_add_detail'
+#   )$set_params(
+#     list(
+#       `@i_yr` = 2016,
+#       `@i_mth` = 6,
+#       `@s_code` = 'JQR4',
+#       `@s_mom`= "Between May 2016 and June 2016 Building of ships & boats turnover fell by -0.3%.",
+#       `@s_yoy` = "Building of ships & boats turnover fell by -29.1%  in the year to June 2016, down from 4.9% in May 2016",
+#
+#       `@i_mm` = -0.3 ,
+#       `@i_yy` = -29.1 ,
+#       `@i_mm_sc` = 1,
+#       `@i_yy_sc` = 2,
+#       `@i_ytd` = -99999,
+#       `@i_value` = 359.5
+#
+#     )
+#   )

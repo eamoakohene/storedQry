@@ -45,24 +45,34 @@ SQ <- R6::R6Class(
 
     #set name
     set_name = function(value) {
-      if (!missing(value) && !is.null(value)) {
+
+      if ( !missing( value ) && !is.null( value ) ) {
+
         if (self$qry_exists(value)) {
 
           self$name <- value
 
           temp <- private$qry_get()
+
           if (!is.null(temp)) {
+
             if (nrow(temp == 1)) {
+
               self$qry_sql <- temp$qry_sql
-              self$qry_params <- temp$qry_params
+              self$qry_params <- gsub( "[[:space:]]", "", temp$qry_params )
               invisible(self)
+
             }else{
+
               stop("Multiple queries with same name.")
+
             }
           }
 
         }else{
+
           stop(paste0("Query ",value," does not exists"))
+
         }
       }
       invisible(self)
@@ -83,8 +93,12 @@ SQ <- R6::R6Class(
     },
 
     get_params = function() {
-      return(strsplit(self$qry_params,
-                      private$params_delimeter)[[1]])
+      return(
+        strsplit(
+          self$qry_params,
+          private$params_delimeter
+         )[[1]]
+      )
     },
 
     #get query name
@@ -126,17 +140,20 @@ SQ <- R6::R6Class(
     qry_replace_params = function() {
       temp_sql <- self$qry_get_sql()
 
-      if (is.null(temp_sql) ||
-          is.na(temp_sql)) {
+      if ( is.null( temp_sql ) || is.na( temp_sql ) ) {
         stop("No sql found")
       }
 
       p <- self$get_params()
+      kwasi_mahuwo <- "Starting:\n"
+
       if (!is.na(p) || is.null(p)) {
+
+
         for (i in 1:length(p)) {
 
-          #cat(p[i],"=")
-          #cat(self$params[[p[i]]],"\n")
+          kwasi_mahuwo <- sprintf("%s %s = %s \n", kwasi_mahuwo, p[ i ], self$params[[ p[i] ]] )
+
 
           if (stringr::str_detect(p[i],"@s_")) {
             temp_sql <- stringr::str_replace(temp_sql,
@@ -169,8 +186,18 @@ SQ <- R6::R6Class(
 
       #multi-statement break into vector
       #cat(temp_sql)
-      if (stringr::str_detect(temp_sql,";")) {
-        temp_sql <- gsub("[\r\n]","",strsplit(temp_sql,";")[[1]])
+
+      is_multi <- try( stringr::str_detect(temp_sql,";"), silent = T)
+
+      if(class( is_multi ) == 'try-error' || is.na( is_multi) || is.null( is_multi) || length( is_multi) == 0 ){
+
+        cat("Error encountered! Aborting current process ....\n")
+        return( kwasi_mahuwo )
+
+      }
+
+      if (is_multi ) {
+        temp_sql <- gsub("[[:space:]]","",strsplit(temp_sql,";")[[1]])
       }
 
       return(temp_sql)
@@ -187,6 +214,7 @@ SQ <- R6::R6Class(
       }
 
     },
+
 
     get_delimiter = function() {
       return (private$params_delimeter)
@@ -413,13 +441,21 @@ SQ <- R6::R6Class(
     },
 
     table_info = function(tname) {
-      if (!missing(tname)) {
-        return(private$run_sql(paste0(
-          "PRAGMA table_info('",tname,"')"
-        )))
 
-      }else{
+      if (!missing(tname)) {
+
+        return(
+          private$run_sql(
+            paste0(
+              "PRAGMA table_info('",tname,"')"
+            )
+          )
+        )
+
+      } else {
+
         stop("Please supply the table name")
+
       }
     },
 

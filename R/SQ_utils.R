@@ -13,10 +13,12 @@ SQ_utils <- R6::R6Class(
         }
         invisible(self)
       }
+
       ,get_db = function(){
-        return(self$db)
+        return( self$db )
       }
     ),
+
     private = list(
 
         #get connection string
