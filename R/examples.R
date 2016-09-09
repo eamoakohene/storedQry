@@ -37,3 +37,12 @@
 #
 #     )
 #   )
+# my_list <-  list(
+#     `@i_yr` = 2016,
+#     `@i_mth` = 9,
+#     `@i_dy` = 8,
+#     `@s_data_code` = 'USD',
+#     `@i_data_value` = 1.3359
+# )
+#
+# storedQry::SQ$new( 'R:/shiny/beama/bmonitor/bss.sqlite' )$set_name("tdi_update_indicator")$set_params( my_list )$params_replace()

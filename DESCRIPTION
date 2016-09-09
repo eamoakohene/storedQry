@@ -1,7 +1,7 @@
 Package: storedQry
 Type: Package
 Title: Helper Class For Stored Queries In SQLite
-Version: 0.3.0
+Version: 0.3.1
 Author: Emmanuel Amoakohene
 Maintainer: <eamoakohene@gmail.com>
 Depends: R6
