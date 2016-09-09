@@ -10,19 +10,19 @@ SQ <- R6::R6Class(
     qry_params = NULL, # stored query parameters
 
 
-    initialize = function(db, name , params) {
+    initialize = function( db, name , params) {
 
-      super$initialize(db)
+      super$initialize( db )
 
-      if(!is.null(self$db)){
+      if( !is.null( self$db ) ){
 
           #set stored query name & parameters if supplied
-          if (!missing(name) && !is.null(name)) {
+          if ( !missing( name ) && !is.null( name ) ) {
 
-            if (self$qry_exists(name)) {
+            if ( self$qry_exists( name ) ) {
                self$set_name()
             }else{
-               stop(paste0("Query ",name," does not exists"))
+               stop( paste0("Query ",name," does not exists"))
             }
 
           }
