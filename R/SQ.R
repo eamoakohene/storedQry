@@ -194,7 +194,7 @@ SQ <- R6::R6Class(
       }
 
       if (is_multi ) {
-        temp_sql <- gsub("[[:space:]]","",strsplit(temp_sql,";")[[1]])
+        temp_sql <- gsub("[\r\n]","",strsplit(temp_sql,";")[[1]])
       }
 
       return(temp_sql)
