@@ -206,8 +206,8 @@ SQ <- R6::R6Class(
     qry_exec = function() {
       temp <- self$qry_replace_params()
       #cat(temp)
-      if (length(temp) == 1) {
-        return(private$run_sql(temp))
+      if ( length( temp ) == 1) {
+        return( private$run_sql( temp ))
       }else{
         ltemp <- sapply(temp, private$run_sql)
         return(ltemp)
