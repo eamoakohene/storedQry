@@ -11,7 +11,7 @@ SQ <- R6::R6Class(
     qry_params = NULL, # stored query parameters
 
 
-#' Constructure for stored query object
+#' Constructor for stored query object
 #'
 #' @param db character parameter for the sqlite database file including full path (eg "R:/mydata/mydq.sqlite")
 #'   If the \code{db} parameter is not supplied at the initialization stage, it should be set by \code{set_db} method
