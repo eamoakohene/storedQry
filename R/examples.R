@@ -16,45 +16,45 @@
 #abc$qry_exec()
 #storedQry::SQ$new( 'R:/packages/beamafx/inst/extdata/beamafx.sqlite' )$set_name("fx_update_periods")$qry_exec()
 
-# abc <- SQ$new(
+# abc <- storedQry::SQ$new(
 #   'R:/shiny/beama/bmonitor/bss.sqlite'
 #   )$set_name(
 #     'trends_growth_add_detail'
 #   )$set_params(
 #     list(
-#       `@i_yr` = 2016,
-#       `@i_mth` = 6,
+#       `@i_yr` = as.character(2016),
+#       `@i_mth` = as.character(6),
 #       `@s_code` = 'JQR4',
 #       `@s_mom`= "Between May 2016 and June 2016 Building of ships & boats turnover fell by -0.3%.",
 #       `@s_yoy` = "Building of ships & boats turnover fell by -29.1%  in the year to June 2016, down from 4.9% in May 2016",
-#
-#       `@i_mm` = -0.3 ,
-#       `@i_yy` = -29.1 ,
-#       `@i_mm_sc` = 1,
-#       `@i_yy_sc` = 2,
-#       `@i_ytd` = -99999,
-#       `@i_value` = 359.5
-#
+# 
+#       `@i_mm` = as.character(-0.3) ,
+#       `@i_yy` = as.character(-29.1) ,
+#       `@i_mm_sc` = as.character(1),
+#       `@i_yy_sc` = as.character(2),
+#       `@i_ytd` = as.character(-99999),
+#       `@i_value` = as.character(359.5)
+# 
 #     )
 #   )
 
+# library(storedQry)
+# SQ$new(
+#   'R:/shiny/beama/bmonitor/bss.sqlite'
+#  )$set_name(
+#    "tdi_add_indicator"
+#  )$set_params(
+#    list(
+#      `@i_yr` = 2016,
+#      `@i_mth` = 9,
+#      `@i_dy` = 8,
+#      `@s_data_code` = 'USD',
+#      `@i_data_value` = 1.3359
+#    )
+#  )$params_replace()
 
- # SQ$new(
- #   'R:/shiny/beama/bmonitor/bss.sqlite'
- #  )$set_name(
- #    "tdi_update_indicator"
- #  )$set_params(
- #    list(
- #      `@i_yr` = 2016,
- #      `@i_mth` = 9,
- #      `@i_dy` = 8,
- #      `@s_data_code` = 'USD',
- #      `@i_data_value` = 1.3359
- #    )
- #  )$params_replace()
-
- # SQ$new(
- #   'R:/shiny/beama/bmonitor/bss.sqlite'
- # )$set_name(
- #   "trends_update_periods"
- # )$params_replace()
+# SQ$new(
+#   'R:/shiny/beama/bmonitor/bss.sqlite'
+# )$set_name(
+#   "trends_update_periods"
+# )$params_replace()

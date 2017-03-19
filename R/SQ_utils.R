@@ -7,7 +7,7 @@ SQ_utils <- R6::R6Class(
 
       initialize = function( db = NULL ){
 
-        self$set_db(db)
+        self$set_db( db )
 
       }
 
@@ -36,7 +36,11 @@ SQ_utils <- R6::R6Class(
         get_db_con = function(){
 
             return(
-                DBI::dbConnect( RSQLite::SQLite(), dbname= self$get_db() )
+                DBI::dbConnect( 
+                  drv = RSQLite::SQLite(), 
+                  dbname = self$get_db(), 
+                  flags  = RSQLite::SQLITE_RW 
+                )
             )
 
         }
@@ -46,6 +50,28 @@ SQ_utils <- R6::R6Class(
 
             return( sqldf::sqldf( qry, dbname = self$get_db() ) )
 
+        }
+        
+        #execute sql query with connection
+        ,run_sql_con = function(qry){
+          
+          is_select <- (regexpr( "select", tolower(qry) )[1]) > 0 
+          
+          if( is_select){
+            
+            return( 
+              DBI::dbGetQuery( private$get_db_con(), qry  )
+            )
+            
+          }else{
+            
+            return(
+              DBI::dbExecute( private$get_db_con(), qry )
+            )
+            
+          }
+          
+           
         }
 
     )

@@ -1,15 +1,44 @@
+
 SQ <- R6::R6Class(
   "SQ",
   inherit = SQ_utils,
 
   public = list(
 
-    params = NULL,        # query parameters
-    name = NULL,          # query name
+    params = NULL,     # query parameters
+    name = NULL,       # query name
     qry_sql = NULL,    # stored query sql statement
     qry_params = NULL, # stored query parameters
 
 
+#' Constructure for stored query object
+#'
+#' @param db character parameter for the sqlite database file including full path (eg "R:/mydata/mydq.sqlite")
+#'   If the \code{db} parameter is not supplied at the initialization stage, it should be set by \code{set_db} method
+#'   before executing any state query statement. 
+#' @param name  character paramenter for the name of the query to execute 
+#' @param params = a list containing sql parameters if any.
+#'   The name of each parameter is sorrouned in bacttick and pre-pend with @s_ for string and @i_ for any other.
+#'
+#' @return SQ object
+#' @examples  
+#' \dontrun{
+#' storedQry::SQ$new( 
+#'    db = "R:/dbs/mydb.sqlite", 
+#'    name = "qry_update_price",
+#'    params = list( `@s_item` = "orange", `@i_price` = 12.50, `@s_currency` = "GBP")
+#' )
+#' 
+#' storedQry::SQ$new( 
+#'    db = "R:/dbs/mydb.sqlite", 
+#' )$set_name( 
+#'    "qry_update_price"
+#' )set_params(
+#'    list( `@s_item` = "orange", `@i_price` = 12.50, `@s_currency` = "GBP")
+#' )
+#' 
+#' }
+#' 
     initialize = function( db, name , params) {
 
       super$initialize( db )
@@ -20,16 +49,23 @@ SQ <- R6::R6Class(
           if ( !missing( name ) && !is.null( name ) ) {
 
             if ( self$qry_exists( name ) ) {
+
                self$set_name()
+
             }else{
-               stop( paste0("Query ",name," does not exists"))
+
+               stop( sprintf("Query %s does not exists", name) )
+
             }
 
           }
 
-          if (!missing(params) && !is.null(params)) {
+          if (!missing( params ) && !is.null( params )) {
+
             self$params <- params
+
           }
+
       }else{
 
         cat('Please supply db path')
@@ -39,11 +75,29 @@ SQ <- R6::R6Class(
 
     },
 
+#' Returns the path of the current sqlite database
+#'
+#' @return character, path of the sqlite database
+#'
+#' @examples
+#' \dontrun{
+#' SQ$dbs_get_path()
+#' }
     dbs_get_path = function() {
       private$get_db()
     },
 
-    #set name
+    
+#' Set the name of the query to execute
+#'
+#' @param value = the name of the query
+#'
+#' @return SQ object
+#'
+#' @examples 
+#' \dontrun{
+#'  SQ$set_name("my_query_name")
+#' }
     set_name = function(value) {
 
       if ( !missing( value ) && !is.null( value ) ) {
@@ -86,19 +140,23 @@ SQ <- R6::R6Class(
 
     #set params
     set_params = function(value) {
-      if (!missing(value) && !is.null(value) ) {
+
+      if ( !missing( value ) && !is.null( value ) ) {
         self$params <- value
       }
       invisible(self)
+
     },
 
     get_params = function() {
+
       return(
         strsplit(
           self$qry_params,
           private$params_delimeter
          )[[1]]
       )
+
     },
 
     #get query name
@@ -112,15 +170,19 @@ SQ <- R6::R6Class(
 
 
     qry_print_sql = function(value) {
-      if (missing(value)) {
+
+      if ( missing(value) ) {
+
         cat(self$qry_get_sql())
+
       }else{
-        myqry <-
-          paste0("select qry_sql from stored_queries where qry_name='",value,"'")
+
+        myqry <- sprintf("select qry_sql from stored_queries where qry_name='%s' ", value)
         temp <- private$run_sql(myqry)
+
         if (nrow(temp) > 0) {
+
           cat(temp$qry_sql)
-        }else{
 
         }
       }
@@ -128,9 +190,11 @@ SQ <- R6::R6Class(
     },
 
     params_split = function(value) {
-      temp <- base::gsub(",","','",value)
-      temp <- base::paste0("('",temp,"')")
-      return(temp)
+
+      temp <-  gsub( ",", "','", value )
+      temp <-  sprintf( "('%s')", temp)
+      return( temp )
+
     },
 
     params_replace = function() {
@@ -176,7 +240,7 @@ SQ <- R6::R6Class(
 
           }else{
 
-            temp_sql <- stringr::str_replace( temp_sql, p[i], self$params[[ p[i] ]] )
+            temp_sql <- stringr::str_replace( temp_sql, p[i], sprintf("%s", self$params[[ p[i] ]] ) )
           }
         }
       }
@@ -189,7 +253,8 @@ SQ <- R6::R6Class(
       if(class( is_multi ) == 'try-error' || is.na( is_multi) || is.null( is_multi) || length( is_multi) == 0 ){
 
         cat("Error encountered! Aborting current process ....\n")
-        return( kwasi_mahuwo )
+        cat(kwasi_mahuwo )
+        return( NULL )
 
       }
 
@@ -233,37 +298,45 @@ SQ <- R6::R6Class(
 
     qry_add = function(sname,sqry,sparam) {
       if (!missing(sname) && !missing(sqry)) {
+
         if (missing(sparam)) {
+
           if (stringr::str_detect(sqry,"@")) {
+
             stop("Missing parameters")
+
           }else{
+
             private$run_sql(
-              paste0(
-                "insert into stored_queries (qry_name,qry_sql) values ('",
-                sname, "','",
-                sqry,  "')"
-              )
+              sprintf( "insert into stored_queries (qry_name,qry_sql) values ('%s','%s')", sname, sqry)
             )
             invisible(self)
           }#@
+
         }else{
+
           private$run_sql(
-            paste0(
-              "insert into stored_queries (qry_name,qry_sql,qry_params) values ('",
-              sname, "','",
-              sqry,  "','" ,
-              sparam,"')"
+
+            sprintf(
+              "insert into stored_queries (qry_name,qry_sql,qry_params) values ('%s','%s','%s')",
+              sname, sqry, sparam
             )
+
           )
+
           invisible(self)
         }
       }else{
+
         stop("Missing query name or sql statement")
+
       }#missing
     },#function
 
     qry_update = function(sname,sqry,sparam) {
+      
       if (!missing(sname)) {
+        
         if (missing(sparam) && !missing(sqry)) {
           private$run_sql(
             paste0(
@@ -275,6 +348,7 @@ SQ <- R6::R6Class(
           invisible(self)
 
         }else if (!missing(sparam) && missing(sqry)) {
+          
           private$run_sql(
             paste0(
               " update stored_queries set ",
@@ -285,6 +359,7 @@ SQ <- R6::R6Class(
           invisible(self)
 
         }else if (!missing(sparam) && !missing(sqry)) {
+          
           private$run_sql(
             paste0(
               " update stored_queries set ",
@@ -296,17 +371,25 @@ SQ <- R6::R6Class(
           invisible(self)
 
         }else{
+          
           stop("Missing sql statement or parameters")
+          
         }#missing
+        
       }else{
+        
         stop("Missing stored query name")
+        
       }
     },#function
 
     qry_delete = function(value) {
+      
       if (!missing(value)) {
+        
         private$run_sql(paste0("delete from stored_queries where qry_name='",value,"';"))
         invisible(self)
+        
       }else{
         stop("Please supply Query name")
       }
@@ -429,7 +512,7 @@ SQ <- R6::R6Class(
       return(temp)
     },
 
-    table_all = function(tname,where=NULL, order_by = NULL) {
+    table_all = function( tname, where=NULL, order_by = NULL) {
       if (!missing(tname)) {
         return(self$table_get_records(tname = tname,where=where , order_by = order_by ))
       }else{
@@ -551,8 +634,8 @@ SQ <- R6::R6Class(
 
       tcount <- private$run_sql(do_i_exist)
 
-      if (nrow(tcount) == 0) {
-        be_borned <- private$run_sql(ddl)
+      if ( nrow(tcount) == 0) {
+        be_borned <- private$run_sql( ddl )
       }
 
       invisible(self)

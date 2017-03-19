@@ -3,7 +3,9 @@
 \title{R6 Class For Managing Queries Stored in SQLite database}
 
 \usage{
-
+    
+    db <- "path_to_sqlite_db"
+    
     SQ$new( db )$table_procreate()  #create stored_queries table
 
 
@@ -79,10 +81,35 @@ The ddl statement of the \code{stored_queries} table is as follows
 \examples{
 
  ##Not run
-  sq <- SQ$new( 'my_db', 'my_qry_name', list(`@s_field1`) = "value1", `@i_field2` = 2, ... ) )
+  sq <- storedQry::SQ$new( 
+         db = 'my_db', 
+         name = 'my_qry_name', 
+         params = list(
+               `@s_field1` = "value1", 
+               `@i_field2` = 2,
+               ... 
+        ) 
+  )
   sq$qry_exec()
 
   #or
-  SQ$new( 'my_db' )$set_name( 'my_qry_name' )$set_params( list(`@s_field1`) = "value1", `@i_field2` = 2, ... ) )$qry_exec()
+  storedQry::SQ$new( 
+    'my_db' 
+  )$set_name( 
+    'my_qry_name' 
+  )$set_params( 
+    list(
+        `@s_field1` = "value1", 
+        `@i_field2` = 2, 
+        ... 
+    ) 
+  )$qry_exec()
 
+ #Typically you will create one SQ object and use for several queries
+ 
+ sq <- storedQry::SQ$new('my_db')
+ 
+ sq$set_name( 'my_qry_name1' )$set_params( my_params_list1 )$qry_exec()
+ 
+ sq$set_name( 'my_qry_name2' )$set_params( my_params_list2 )$qry_exec()
 }
