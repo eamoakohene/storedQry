@@ -84,7 +84,7 @@ SQ <- R6::R6Class(
 #' SQ$dbs_get_path()
 #' }
     dbs_get_path = function() {
-      private$get_db()
+      self$get_db()
     },
 
     
@@ -138,7 +138,18 @@ SQ <- R6::R6Class(
     },
 
 
-    #set params
+#' Set query parameters
+#'
+#' @param params = a list containing sql parameters
+#'   The name of each parameter is surrouned in bactticks and pre-pended with @s_ for string and @i_ for any other.
+#'
+#' @return SQ object
+#'
+#' @examples
+#' SQ$set_params(
+#'    list( `@s_item` = "orange", `@i_price` = 12.50, `@s_currency` = "GBP")
+#' )
+
     set_params = function(value) {
 
       if ( !missing( value ) && !is.null( value ) ) {
@@ -148,6 +159,13 @@ SQ <- R6::R6Class(
 
     },
 
+#' Returns query parameters
+#'
+#' @return List of query parameters
+#'
+#' @examples
+#' SQ$get_params()
+#' 
     get_params = function() {
 
       return(
@@ -266,13 +284,18 @@ SQ <- R6::R6Class(
     },
 
     qry_exec = function() {
+      
       temp <- self$qry_replace_params()
       #cat(temp)
       if ( length( temp ) == 1) {
+        
         return( private$run_sql( temp ))
+        
       }else{
-        ltemp <- sapply(temp, private$run_sql)
+        
+        ltemp <- sapply( temp, private$run_sql)
         return(ltemp)
+        
       }
 
     },
@@ -631,7 +654,22 @@ SQ <- R6::R6Class(
       "
 
       do_i_exist <- "SELECT count(name) as tcount FROM sqlite_master WHERE type='table' AND name='stored_queries';"
-
+      
+      #connect to sqlite db
+      if( !file.exists( self$get_db() ) ){
+        
+        my_db <- RSQLite::dbConnect( 
+            drv = RSQLite::SQLite(), 
+            dbname = self$get_db()
+        )
+        
+        sqldf::sqldf(
+          sprintf("attach '%s' as new", self$get_db() ) 
+        )
+        
+      }
+      
+      
       tcount <- private$run_sql(do_i_exist)
 
       if ( nrow(tcount) == 0) {
