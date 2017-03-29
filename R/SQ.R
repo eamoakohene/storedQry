@@ -240,25 +240,25 @@ SQ <- R6::R6Class(
 
           if (stringr::str_detect(p[i],"@s_")) {
 
-            temp_sql <- stringr::str_replace(
+            temp_sql <- stringr::str_replace_all(
               temp_sql, p[i], sprintf( "'%s'", self$params[[ p[i] ]])
             )
 
           }else if (stringr::str_detect(p[i],"@ls_")) {
 
-            temp_sql <- stringr::str_replace(
+            temp_sql <- stringr::str_replace_all(
               temp_sql, p[i], self$params_split( self$params[[ p[i] ]] )
             )
 
           }else if (stringr::str_detect(p[i],"@li_")) {
 
-            temp_sql <- stringr::str_replace(
+            temp_sql <- stringr::str_replace_all(
               temp_sql, p[i],  sprintf( "(%s)", self$params[[ p[i] ]])
             )
 
           }else{
 
-            temp_sql <- stringr::str_replace( temp_sql, p[i], sprintf("%s", self$params[[ p[i] ]] ) )
+            temp_sql <- stringr::str_replace_all( temp_sql, p[i], sprintf("%s", self$params[[ p[i] ]] ) )
           }
         }
       }

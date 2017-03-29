@@ -58,3 +58,30 @@
 # )$set_name(
 #   "trends_update_periods"
 # )$params_replace()
+
+# abc <-storedQry::SQ$new( "R:/shiny/beama/bmonitor/bss.sqlite" )$set_name( "tdi_update_indicator" )$set_params(
+#     list(
+#           `@i_yr` =  2017,
+#           `@i_mth` =  3,
+#           `@i_dy` =  22,
+#           `@s_data_code` =  'USD',
+#           `@i_data_value` =  1.2452 ,
+#           `@i_data_lowest` =  1.2065,
+#           `@i_data_highest` = 2.1064
+#     )
+# )
+# 
+# abc$params_replace()
+# 
+# cde <- SQ$new( "R:/shiny/beama/bmonitor/bss.sqlite" )$set_name( "tdi_update_indicator" )$set_params(
+#   list(
+#     `@i_yr` =  2017,
+#     `@i_mth` =  3,
+#     `@i_dy` =  22,
+#     `@s_data_code` =  'USD',
+#     `@i_data_value` =  1.2452 ,
+#     `@i_data_lowest` =  1.2065,
+#     `@i_data_highest` = 2.1064
+#   )
+# )
+# cde$params_replace()
