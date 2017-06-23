@@ -230,7 +230,7 @@ SQ <- R6::R6Class(
       p <- self$get_params()
       kwasi_mahuwo <- "Starting:\n"
 
-      if (!is.na(p) || is.null(p)) {
+      if (!is.na( p ) || is.null( p )) {
 
 
         for (i in 1:length(p)) {
@@ -240,25 +240,33 @@ SQ <- R6::R6Class(
 
           if (stringr::str_detect(p[i],"@s_")) {
 
-            temp_sql <- stringr::str_replace_all(
-              temp_sql, p[i], sprintf( "'%s'", self$params[[ p[i] ]])
+            temp_sql <- gsub(
+              p[i], sprintf( "'%s'", self$params[[ p[i] ]], temp_sql)
             )
 
           }else if (stringr::str_detect(p[i],"@ls_")) {
 
-            temp_sql <- stringr::str_replace_all(
-              temp_sql, p[i], self$params_split( self$params[[ p[i] ]] )
+            temp_sql <- gsub(
+              p[i], self$params_split( self$params[[ p[i] ]], temp_sql )
             )
 
           }else if (stringr::str_detect(p[i],"@li_")) {
 
-            temp_sql <- stringr::str_replace_all(
-              temp_sql, p[i],  sprintf( "(%s)", self$params[[ p[i] ]])
+            temp_sql <- gsub(
+              p[i],  sprintf( "(%s)", self$params[[ p[i] ]], temp_sql)
             )
 
+          }else if (stringr::str_detect(p[i],"@i_")) {
+            
+            temp_sql <- gsub(
+              p[i],  sprintf( "%s", self$params[[ p[i] ]], temp_sql)
+            )
+            
           }else{
 
-            temp_sql <- stringr::str_replace_all( temp_sql, p[i], sprintf("%s", self$params[[ p[i] ]] ) )
+            temp_sql <- gsub( 
+               p[i],  sprintf("%s", self$params[[ p[i] ]], temp_sql ) 
+            )
           }
         }
       }
