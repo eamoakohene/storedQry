@@ -4,6 +4,5 @@ Title: Helper Class For Stored Queries In SQLite
 Version: 0.3.2
 Author: Emmanuel Amoakohene
 Maintainer: <eamoakohene@gmail.com>
-Depends: R6,stringr,RODBC,RSQLite
 Description: A helper Class for managing stored queries in Sqlite db.
 LazyData: TRUE
