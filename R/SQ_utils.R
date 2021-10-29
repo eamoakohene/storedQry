@@ -1,3 +1,5 @@
+require("R6")
+
 SQ_utils <- R6::R6Class(
     'SQ_utils',
 
