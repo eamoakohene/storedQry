@@ -1,5 +1,4 @@
 require("R6")
-
 SQ <- R6::R6Class(
   "SQ",
   inherit = SQ_utils,
